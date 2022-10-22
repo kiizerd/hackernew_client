@@ -5,7 +5,13 @@ const Item = ({ id }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    getRemoteItem(id);
+    const storedData = JSON.parse(localStorage.getItem(`${id}`));
+    if (storedData) {
+      console.log(storedData)
+      setData(storedData);
+    } else {
+      getRemoteItem(id);
+    }
   }, []);
 
   async function getRemoteItem(itemId) {
@@ -13,6 +19,7 @@ const Item = ({ id }) => {
     const item = await itemResponse.json();
 
     setData(item);
+    localStorage.setItem(`${id}`, JSON.stringify(item))
   }
 
   return <li><div>{data.title}</div></li>;
