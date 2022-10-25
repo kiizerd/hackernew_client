@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 import Item from "./Item";
+import PageControls from "./PageControls";
 
-const PageControls = ({ increment, decrement, current }) => {
-  return (
-    <div>
-      <button disabled={current == 0} onClick={decrement}>
-        - 1
-      </button>
-      <span>{current}</span>
-      <button onClick={increment}>+ 1</button>
-    </div>
-  );
-};
+const List = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 5px 2px;
+  background-color: #363636;
+`;
 
 const ItemList = ({ endpoint, perPage }) => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -39,7 +36,9 @@ const ItemList = ({ endpoint, perPage }) => {
   const currentItems = (page) => {
     const ids = currentItemIds(page);
 
-    return ids.map((id) => <Item key={id} id={id} />);
+    return ids.map((id) => (
+      <Item key={id} id={id} index={collection.indexOf(id)} />
+    ));
   };
 
   const incrementPage = () => setCurrentPage(currentPage + 1);
@@ -57,7 +56,8 @@ const ItemList = ({ endpoint, perPage }) => {
       {controls}
       {/* Key prop is necessary to re-render list element when currentPage changes */}
       {/* DO NOT REMOVE -- TRY TO REMEMBER */}
-      <ul key={currentPage}> {currentItems(currentPage)} </ul>
+      <List key={currentPage}> {currentItems(currentPage)} </List>
+      <hr />
       {controls}
     </section>
   );
