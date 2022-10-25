@@ -5,6 +5,12 @@ import {
 } from "./endpoints";
 import "./App.css";
 import ListTabs from "./components/ListTabs";
+import styled from "styled-components";
+
+const PageTitle = styled.h2`
+  font-size: 2em;
+  margin-top: 0;
+`
 
 const App = () => {
   const lists = {
@@ -14,7 +20,7 @@ const App = () => {
   };
   return (
     <div className="App">
-      <h1>HackerNews Client</h1>
+      <PageTitle>HackerNews Client</PageTitle>
       <ListTabs lists={lists} />
     </div>
   );
