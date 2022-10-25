@@ -8,3 +8,6 @@ export const askStoriesEndpoint  = "https://hacker-news.firebaseio.com/v0/asksto
 export const itemEndpoint = (itemNum) => {
   return `https://hacker-news.firebaseio.com/v0/item/${itemNum}.json?print=pretty`;
 }
+export const userEndpoint = (username) => {
+  return `https://hacker-news.firebaseio.com/v0/user/${username}.json?print=pretty`;
+}
