@@ -7,7 +7,7 @@ const List = styled.ul`
   list-style: none;
   margin: 0;
   padding: 5px 2px;
-  background-color: #363636;
+  background-color: #404040;
 `;
 
 const ItemList = ({ endpoint, perPage }) => {
