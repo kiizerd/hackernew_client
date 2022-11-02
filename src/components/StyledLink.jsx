@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const styles = `
+export default styled.a`
 cursor: pointer;
 color: rgb(254, 254, 254, 0.9);
-font-size: ${(props) => (props.smallFont ? "10px" : "12px")};
-font-style: ${(props) => (props.smallFont ? "italic" : "normal")};
+font-size: ${(props) => (props.smallfont ? "10px" : "12px")};
+font-style: ${(props) => (props.smallfont ? "italic" : "normal")};
 white-space: wrap;
 justify-text: left;
 text-align: left;
@@ -21,18 +21,38 @@ overflow: scroll;
 }
 
 @media (min-width: 768px) {
-  font-size: ${(props) => (props.smallFont ? "13px" : "15px")};
+  font-size: ${(props) => (props.smallfont ? "13px" : "15px")};
 }
 
 @media (min-width: 1024px) {
-  font-size: ${(props) => (props.smallFont ? "15px" : "17px")};
+  font-size: ${(props) => (props.smallfont ? "15px" : "17px")};
 }
 `;
 
-export default styled.a`
-  ${styles}
-`;
-
 export const StyledRouterLink = styled(Link)`
-  ${styles}
+cursor: pointer;
+color: rgb(254, 254, 254, 0.9);
+font-size: ${(props) => (props.smallfont ? "10px" : "12px")};
+font-style: ${(props) => (props.smallfont ? "italic" : "normal")};
+white-space: wrap;
+justify-text: left;
+text-align: left;
+overflow: scroll;
+
+&:visited {
+  color: rgb(210, 210, 210, 1);
+}
+
+&:hover {
+  color: rgb(255, 255, 255, 0.975);
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  font-size: ${(props) => (props.smallfont ? "13px" : "15px")};
+}
+
+@media (min-width: 1024px) {
+  font-size: ${(props) => (props.smallfont ? "15px" : "17px")};
+}
 `;

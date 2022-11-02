@@ -71,7 +71,7 @@ const Item = ({ id, index }) => {
         </ItemRow>
         <ItemRow greyed>
           <span>{data.score} points by</span>
-          <StyledLink smallFont href={userEndpoint(data.by)}>
+          <StyledLink smallfont href={userEndpoint(data.by)}>
             {data.by}
           </StyledLink>
           <span>|</span>
