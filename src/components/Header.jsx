@@ -19,19 +19,26 @@ const HeaderList = styled.ul`
   font-size: 0.8rem;
 
   // Add a separator after every child but last
-  & > * {
+  & > li {
+    & > a {
+      color: inherit;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
     &:after {
       margin: 5px;
       content: "|";
     }
-    
+
     &:last-child {
       &:after {
         content: "";
       }
     }
   }
-`
+`;
 
 const Header = ({ tabLists }) => {
   return (
