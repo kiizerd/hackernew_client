@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Item from "./Item";
 import PageControls from "./PageControls";
@@ -10,21 +10,8 @@ const List = styled.ul`
   background-color: #404040;
 `;
 
-const ItemList = ({ endpoint, perPage }) => {
+const ItemList = ({ collection, perPage }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const [collection, setCollection] = useState([]);
-
-  useEffect(() => {
-    getCollection();
-  }, []);
-
-  async function getCollection() {
-    const response = await fetch(endpoint);
-    const collectionIds = await response.json();
-    console.log(endpoint, collectionIds);
-
-    setCollection(collectionIds);
-  }
 
   const currentItemIds = (page) => {
     const startIndex = page * perPage;
