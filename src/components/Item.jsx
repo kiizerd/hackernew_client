@@ -76,10 +76,16 @@ const Item = ({ id, index }) => {
           </StyledLink>
           <span>|</span>
           {time}
-          <span>|</span>
-          <StyledRouterLink smallFont to={localURL}>
-            {data.descendants} comments
-          </StyledRouterLink>
+          {data.descendants >= 0 ? (
+            <>
+              <span>|</span>
+              <StyledRouterLink smallfont="true" to={localURL}>
+                {`${data.descendants} comments`}
+              </StyledRouterLink>
+            </>
+          ) : (
+            false
+          )}
         </ItemRow>
       </ItemCol>
     </ListItem>
