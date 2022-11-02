@@ -4,6 +4,7 @@ const StyledHeader = styled.header`
   padding: 4px;
   display: flex;
   gap: 12px;
+  background-color: #363636;
 `;
 
 const PageTitle = styled.div`
