@@ -1,56 +1,21 @@
 import { useState, useEffect } from "react";
 import ReactTimeAgo from "react-time-ago";
-import styled from "styled-components";
-import { itemEndpoint, userEndpoint } from "../endpoints";
-
-const ListItem = styled.li`
-  display: flex;
-  height: 3rem;
-  align-items: start;
-  margin: 5px;
-  padding: 5px;
-  background-color: #553535;
-  font-size: 12px;
-  gap: 6px;
-  outline: 1px solid transparent;
-  transition: outline 0.3s linear;
-
-  &:hover {
-    outline: 1px solid #242424;
-  }
-`;
-
-const Link = styled.a`
-  cursor: pointer;
-  color: rgb(254, 254, 254, 0.85);
-  font-size: ${(props) => (props.smallFont ? "12px" : "14px")};
-  font-style: ${(props) => (props.smallFont ? "italic" : "normal")};
-
-  &:visited {
-    color: rgb(248, 248, 248, 0.68);
-  }
-
-  &:hover {
-    color: rgb(255, 255, 255, 0.975);
-    text-decoration: underline;
-  }
-`;
-
-const ItemCol = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const ItemRow = styled.div`
-  display: flex;
-  gap: 5px;
-`;
+import { itemEndpoint, userEndpoint } from "../api/requests";
+import ListItem from "./Item/ListItem";
+import ItemCol from "./Item/ItemCol";
+import ItemRow from "./Item/ItemRow";
+import StyledLink, { StyledRouterLink } from "./StyledLink";
 
 const Item = ({ id, index }) => {
   const [data, setData] = useState({});
   const [link, setLink] = useState("");
   const [time, setTime] = useState(false);
+  const [localURL, setLocalURL] = useState("");
 
+  // TODO: Try to rewrite these complex 'useEffect's as custom hooks
+
+  // if item exists in local storage, read it
+  // otherwise make a new fetch request
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem(`${id}`));
     if (storedData) {
@@ -61,17 +26,19 @@ const Item = ({ id, index }) => {
   }, []);
 
   // When data is set...
-  // Store link and date separately to allow use of JS api's
+  // Store link and time separately to allow use of JS apis
   useEffect(() => {
+    if (data.time && !Boolean(time)) {
+      setTime(<ReactTimeAgo date={new Date(data.time * 1000)} />);
+    }
     // If there isn't a URL,
     // we need to generate a page displaying data.text
     if (data.url) {
       const itemURL = new URL(data.url);
       setLink(itemURL);
-    } else console.log(data);
-
-    if (data.time) {
-      setTime(<ReactTimeAgo date={new Date(data.time * 1000)} />);
+      setLocalURL(`/item/${id}`);
+    } else {
+      setLink(`/item/${id}`);
     }
   }, [data]);
 
@@ -85,26 +52,34 @@ const Item = ({ id, index }) => {
 
   return (
     <ListItem>
-      <span>{index + 1}.</span>
+      {index || index === 0 ? <span>{index + 1}.</span> : null}
       <ItemCol>
         <ItemRow>
+          {/* If an external url exists... */}
           {data.url ? (
             <>
-              <Link href={data.url}>{data.title}</Link>
-              <span>({link ? link.host : false})</span>
+              {/* Use a regular styled `a` tag */}
+              <StyledLink target="_blank" href={data.url}>
+                {data.title}
+              </StyledLink>
+              <span>{link ? `(${link.host})` : false}</span>
             </>
           ) : (
-            // Replace with react-route
-            <Link href="">{data.title}</Link>
+            // Use styled react-router `Link` tag
+            <StyledRouterLink to={link}>{data.title}</StyledRouterLink>
           )}
         </ItemRow>
-        <ItemRow>
+        <ItemRow greyed>
           <span>{data.score} points by</span>
-          <Link smallFont href={userEndpoint(data.by)}>
+          <StyledLink smallFont href={userEndpoint(data.by)}>
             {data.by}
-          </Link>
+          </StyledLink>
           <span>|</span>
           {time}
+          <span>|</span>
+          <StyledRouterLink smallFont to={localURL}>
+            {data.descendants} comments
+          </StyledRouterLink>
         </ItemRow>
       </ItemCol>
     </ListItem>
