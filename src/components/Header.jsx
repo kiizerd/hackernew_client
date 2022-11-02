@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -39,23 +40,27 @@ const HeaderList = styled.ul`
       }
     }
   }
+
+  .active {
+    text-decoration: underline;
+  }
 `;
 
-const Header = ({ tabLists }) => {
-  return (
-    <StyledHeader>
-      <PageTitle>HackerNews</PageTitle>
-      <HeaderList>
-        <li>best</li>
-        <li>new</li>
-        <li>comments</li>
-        <li>show</li>
-        <li>ask</li>
-        <li>jobs</li>
-        <li>read</li>
-      </HeaderList>
-    </StyledHeader>
-  );
-};
+const Header = ({ lists }) => (
+  <StyledHeader>
+    <PageTitle>HackerNews</PageTitle>
+    <HeaderList>
+      {lists.map((listName, index) => (
+        <li key={index}>
+          <NavLink to={`list/${listName}`}>
+            {({ isActive }) => (
+              <span className={isActive ? "active" : ""}>{listName}</span>
+            )}
+          </NavLink>
+        </li>
+      ))}
+    </HeaderList>
+  </StyledHeader>
+);
 
 export default Header;
