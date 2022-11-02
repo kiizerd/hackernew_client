@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
@@ -8,9 +8,14 @@ const StyledHeader = styled.header`
   background-color: #363636;
 `;
 
-const PageTitle = styled.div`
+const PageTitle = styled(Link)`
+  color: unset;
   font-size: 1.2rem;
   margin-right: 8px;
+
+  &:hover {
+    color: unset;
+  }
 `;
 
 const HeaderList = styled.ul`
@@ -48,7 +53,7 @@ const HeaderList = styled.ul`
 
 const Header = ({ lists }) => (
   <StyledHeader>
-    <PageTitle>HackerNews</PageTitle>
+    <PageTitle to={`list/top`}>HackerNews</PageTitle>
     <HeaderList>
       {lists.map((listName, index) => (
         <li key={index}>
