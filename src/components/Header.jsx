@@ -53,7 +53,7 @@ const HeaderList = styled.ul`
 
 const Header = ({ lists }) => (
   <StyledHeader>
-    <PageTitle to={`list/top`}>HackerNews</PageTitle>
+    <PageTitle to={`/`}>HackerNews</PageTitle>
     <HeaderList>
       {lists.map((listName, index) => (
         <li key={index}>
