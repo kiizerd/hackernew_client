@@ -4,10 +4,10 @@ import Item from "./Item";
 import PageControls from "./PageControls";
 
 const List = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 5px 2px;
-  background-color: #404040;
+  border-top: 1px solid var(--primary-accent-color);
+  border-bottom: 1px solid var(--primary-accent-color);
+  background-color: var(--foreground-color);
+  padding: 2px 0;
 `;
 
 const ItemList = ({ collection, perPage }) => {
@@ -44,7 +44,6 @@ const ItemList = ({ collection, perPage }) => {
       {/* Key prop is necessary to re-render list element when currentPage changes */}
       {/* DO NOT REMOVE -- TRY TO REMEMBER */}
       <List key={currentPage}> {currentItems(currentPage)} </List>
-      <hr />
       {controls}
     </section>
   );

@@ -2,45 +2,49 @@ import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledHeader = styled.header`
-  padding: 4px;
   display: flex;
-  gap: 12px;
-  background-color: #363636;
+  background-color: var(--primary-color);
+  border-bottom: 1px solid var(--primary-accent-color);
+  padding: 0 4px;
+  gap: 7px;
+
+  @media (min-width: 768px) {
+    gap: 11px;
+  }
 `;
 
-const PageTitle = styled(Link)`
-  color: unset;
-  font-size: 1.2rem;
-  margin-right: 8px;
+const Title = styled(Link)`
+  color: white;
 
-  &:hover {
-    color: unset;
+  &:visited {
+    color: white;
   }
 `;
 
 const HeaderList = styled.ul`
   display: flex;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.8rem;
+  align-items: center;
+  font-size: 12px;
+  padding-top: 2px;
+
+  @media (min-width: 768px) {
+    font-size: 13px;
+  }
 
   // Add a separator after every child but last
-  & > li {
-    & > a {
-      color: inherit;
-
-      &:hover {
-        text-decoration: underline;
-      }
+  li {
+    * {
+      color: white;
     }
+
     &:after {
-      margin: 5px;
+      margin: 4px;
       content: "|";
     }
 
     &:last-child {
       &:after {
+        margin: 0;
         content: "";
       }
     }
@@ -53,7 +57,7 @@ const HeaderList = styled.ul`
 
 const Header = ({ lists }) => (
   <StyledHeader>
-    <PageTitle to={`/`}>HackerNews</PageTitle>
+    <Title to={`/`}>HackerNews</Title>
     <HeaderList>
       {lists.map((listName, index) => (
         <li key={index}>
