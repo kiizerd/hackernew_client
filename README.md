@@ -7,5 +7,6 @@ Uses localStorage to cache API requests.
 
 Made with:
  - React
- - react-tab
+ - react-router
+ - styled-components
  - Vite
