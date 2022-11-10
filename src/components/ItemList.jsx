@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import Item from "./Item";
+import ListItem from "./Item/ListItem";
 import PageControls from "./PageControls";
 
 const List = styled.ul`
@@ -24,9 +25,13 @@ const ItemList = ({ collection, perPage }) => {
     const ids = currentItemIds(page);
 
     return ids.map((id) => (
-      <Item key={id} id={id} index={collection.indexOf(id)} />
+      <ListItem key={id} id={id} index={collection.indexOf(id)} />
     ));
   };
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [collection])
 
   const incrementPage = () => setCurrentPage(currentPage + 1);
   const decrementPage = () => setCurrentPage(currentPage - 1);
