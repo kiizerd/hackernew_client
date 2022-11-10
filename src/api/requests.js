@@ -25,7 +25,7 @@ const collectionEndpoints = {
   best: bestStoriesEndpoint,
   ask: askStoriesEndpoint,
   show: showStoriesEndpoint,
-  job: jobStoriesEndpoint,
+  jobs: jobStoriesEndpoint,
 };
 
 const endpoints = {
