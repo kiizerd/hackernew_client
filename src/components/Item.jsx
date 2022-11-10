@@ -1,95 +1,35 @@
-import { useState, useEffect } from "react";
-import ReactTimeAgo from "react-time-ago";
-import { itemEndpoint, userEndpoint } from "../api/requests";
+import { useMatch, useParams } from "react-router-dom";
 import ListItem from "./Item/ListItem";
-import ItemCol from "./Item/ItemCol";
-import ItemRow from "./Item/ItemRow";
-import StyledLink, { StyledRouterLink } from "./StyledLink";
+import CommentItem from "./Item/CommentItem";
+import ItemPageHeader from "./Item/ItemPageHeader";
+import useForagedData from "../hooks/useForagedData";
+import useCustomData from "../hooks/useCustomData";
 
 const Item = ({ id, index }) => {
-  const [data, setData] = useState({});
-  const [link, setLink] = useState("");
-  const [time, setTime] = useState(false);
-  const [localURL, setLocalURL] = useState("");
+  const data = useForagedData(id);
+  const { time, link, localURL } = useCustomData(data);
+  const params = useParams();
 
-  // TODO: Try to rewrite these complex 'useEffect's as custom hooks
-
-  // if item exists in local storage, read it
-  // otherwise make a new fetch request
-  useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem(`${id}`));
-    if (storedData) {
-      setData(storedData);
-    } else {
-      getRemoteItem(id);
+  // Give all these components an id and the custom hooks instead of data
+  // If child of ItemList - move there
+  if (useMatch("") || params.listName)
+    return <ListItem id={id} index={index} />;
+  else {
+    switch (data.type) {
+      // Move these clowns to ItemPage
+      case "story":
+        return <ItemPageHeader data={{ ...data, link, localURL, time }} />;
+      case "comment":
+        return <CommentItem id={id} fromTop={index} />;
+      // Find out how this looks on the native site
+      case "poll":
+        return <div>ima poll</div>;
+      case "pollopt":
+        return <div>ima pollopt</div>;
+      default:
+        break;
     }
-  }, []);
-
-  // When data is set...
-  // Store link and time separately to allow use of JS apis
-  useEffect(() => {
-    if (data.time && !Boolean(time)) {
-      setTime(<ReactTimeAgo date={new Date(data.time * 1000)} />);
-    }
-    // If there isn't a URL,
-    // we need to generate a page displaying data.text
-    if (data.url) {
-      const itemURL = new URL(data.url);
-      setLink(itemURL);
-      setLocalURL(`/item/${id}`);
-    } else {
-      setLink(`/item/${id}`);
-    }
-  }, [data]);
-
-  async function getRemoteItem(itemId) {
-    const itemResponse = await fetch(itemEndpoint(itemId));
-    const item = await itemResponse.json();
-
-    setData(item);
-    localStorage.setItem(`${id}`, JSON.stringify(item));
   }
-
-  return (
-    <ListItem>
-      {index || index === 0 ? <span>{index + 1}.</span> : null}
-      <ItemCol>
-        <ItemRow>
-          {/* If an external url exists... */}
-          {data.url ? (
-            <>
-              {/* Use a regular styled `a` tag */}
-              <StyledLink target="_blank" href={data.url}>
-                {data.title}
-              </StyledLink>
-              <span>{link ? `(${link.host})` : false}</span>
-            </>
-          ) : (
-            // Use styled react-router `Link` tag
-            <StyledRouterLink to={link}>{data.title}</StyledRouterLink>
-          )}
-        </ItemRow>
-        <ItemRow greyed>
-          <span>{data.score} points by</span>
-          <StyledLink smallfont href={userEndpoint(data.by)}>
-            {data.by}
-          </StyledLink>
-          <span>|</span>
-          {time}
-          {data.descendants >= 0 ? (
-            <>
-              <span>|</span>
-              <StyledRouterLink smallfont="true" to={localURL}>
-                {`${data.descendants} comments`}
-              </StyledRouterLink>
-            </>
-          ) : (
-            false
-          )}
-        </ItemRow>
-      </ItemCol>
-    </ListItem>
-  );
 };
 
 export default Item;
