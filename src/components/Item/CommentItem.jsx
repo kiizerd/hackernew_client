@@ -3,9 +3,7 @@ import { useState } from "react";
 import { BiHide, BiShowAlt } from "react-icons/bi";
 import { BarLoader } from "react-spinners";
 import { userEndpoint } from "../../api/requests";
-import Item from "../Item";
 import StyledLink from "../StyledLink";
-import useCustomData from "../../hooks/useCustomData";
 import useForagedData from "../../hooks/useForagedData";
 
 const CommentHeader = styled.div`
@@ -46,7 +44,7 @@ const Comment = styled.div`
   margin-left: ${(props) => (props.fromTop == 0 ? "0" : "11px")};
 `;
 
-const CommentChild = ({ id, index }) => <Comment id={id} fromTop={index} />;
+const CommentChild = ({ id, index }) => <CommentItem id={id} fromTop={index} />;
 const CommentItem = ({ id, fromTop }) => {
   const { by, text, time, ...data } = useForagedData(id);
   const [hidden, setHidden] = useState(true);
