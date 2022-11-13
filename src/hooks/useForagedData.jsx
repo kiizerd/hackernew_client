@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { forageItem } from "../api/storage";
 import ReactTimeAgo from "react-time-ago";
 
-export default (itemId) => {
+const useForagedData = (itemId) => {
   const [data, setData] = useState({});
   const [link, setLink] = useState("");
   const [time, setTime] = useState(false);
@@ -43,3 +43,5 @@ export default (itemId) => {
 
   return { ...data, link, time };
 };
+
+export default useForagedData;

@@ -3,7 +3,7 @@ import PageControls from "../components/PageControls";
 import PerPageSelector from "../components/PerPageSelector";
 import calcMaxPage from "../helpers/calcMaxPage";
 
-export default (collection) => {
+const useCollection = (collection) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [perPage, setPerPage] = useState(16);
   const [maxPage, setMaxPage] = useState(0);
@@ -30,7 +30,7 @@ export default (collection) => {
   const getChildren = (CollectionElement) => {
     const subCollection = getSubCollection(currentPage);
 
-    return subCollection.map((id) =>(
+    return subCollection.map((id) => (
       <CollectionElement key={id} id={id} index={collection.indexOf(id)} />
     ));
   };
@@ -48,3 +48,5 @@ export default (collection) => {
 
   return { currentPage, getChildren, CollectionControls };
 };
+
+export default useCollection;
