@@ -47,40 +47,61 @@ const Comment = styled.div`
   margin-left: ${(props) => props.fromTop * 6 + 4}px;
 `;
 
-export default ({ id, fromTop }) => {
-  const { by, text, ...data } = useForagedData(id);
-  const { time } = useCustomData(data);
-  const [hidden, setHidden] = useState(fromTop > 1);
+const CommentChild = ({ id, index }) => <Comment id={id} fromTop={index} />;
+const CommentItem = ({ id, fromTop }) => {
+  const { by, text, time, ...data } = useForagedData(id);
+  const [hidden, setHidden] = useState(true);
 
   const toggleHide = async () => {
     setHidden(!Boolean(hidden));
   };
 
-  return by && text ? (
+  const ToggleButton = () => (
+    <Toggle onClick={toggleHide}>{hidden ? <BiShowAlt /> : <BiHide />}</Toggle>
+  );
+
+  const ReplyCount = ({ count }) =>
+    count ? `(${count} repl${count == 1 ? "y" : "ies"})` : null;
+
+  const CommentBody = () => (
+    <CommentParagraph
+      isTopComment={fromTop == 0}
+      dangerouslySetInnerHTML={{ __html: text }}
+    />
+  );
+
+  const Replies = ({ list }) =>
+    list.map((id) => <CommentChild key={id} id={id} index={fromTop + 1} />);
+
+  if (!id || data.dead || data.deleted) return null;
+  if (!by || !text) {
+    return (
+      <BarLoader
+        color="var(--primary-accent-color)"
+        height={2}
+        cssOverride={{ marginLeft: "11px" }}
+      />
+    );
+  }
+
+  return (
     <Comment fromTop={fromTop}>
-      <CommentHeader hidden={hidden ? true : undefined}>
+      <CommentHeader fromTop={fromTop}>
+        <ToggleButton />
         <StyledLink italic href={userEndpoint(by)}>
           {by}
         </StyledLink>
         {time}
-        <Toggle onClick={toggleHide}>
-          {hidden ? <BiShowAlt /> : <BiHide />}
-        </Toggle>
+        <ReplyCount count={data.kids?.length} />
       </CommentHeader>
       {hidden ? null : (
-        <CommentParagraph
-          isTopComment={fromTop == 0}
-          dangerouslySetInnerHTML={{ __html: text }}
-        />
+        <>
+          <CommentBody />
+          {data.kids ? <Replies list={data.kids} /> : null}
+        </>
       )}
-      {!hidden && data.kids
-        ? data.kids.map(
-            (id, index) =>
-              fromTop < 2 && <Item key={index} id={id} index={fromTop + 1} />
-          )
-        : null}
     </Comment>
-  ) : (
-    <BarLoader color="var(--primary-accent-color)" height={1} />
   );
 };
+
+export default CommentItem;
