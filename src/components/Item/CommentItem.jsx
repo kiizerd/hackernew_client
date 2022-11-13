@@ -9,19 +9,19 @@ import useCustomData from "../../hooks/useCustomData";
 import useForagedData from "../../hooks/useForagedData";
 
 const CommentHeader = styled.div`
-  gap: 7px;
+  gap: 11px;
   display: flex;
   padding: 2px 7px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   align-items: center;
-  background-color: var(--primary-color);
+  background-color: var(
+    ${(props) =>
+      ((props.fromTop % 2) + 1) % 2 == 0
+        ? "--primary-offset-color"
+        : "--primary-color"}
+  );
   border: 0 solid var(--primary-accent-color);
   border-left-width: 1px;
-
-  & > a {
-    &::after {
-    }
-  }
 `;
 
 const Toggle = styled.button`
@@ -43,8 +43,7 @@ const CommentParagraph = styled.p`
 `;
 
 const Comment = styled.div`
-  margin: ${(props) => (props.fromTop == 0 ? "4px" : "0 4px")};
-  margin-left: ${(props) => props.fromTop * 6 + 4}px;
+  margin-left: ${(props) => (props.fromTop == 0 ? "0" : "11px")};
 `;
 
 const CommentChild = ({ id, index }) => <Comment id={id} fromTop={index} />;
