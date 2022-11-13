@@ -11,6 +11,10 @@ const Button = styled.button`
   * {
     stroke: #fff;
   }
+
+  &:disabled {
+    filter: brightness(0.5);
+  }
 `;
 
 const ControlsRow = styled.div`
@@ -35,7 +39,6 @@ const PageControls = ({ current, max, update }) => {
       <Button disabled={current == max} onClick={() => update(current + 1)}>
         <GrNext />
       </Button>
-      {/* <hr /> */}
     </ControlsRow>
   );
 };
