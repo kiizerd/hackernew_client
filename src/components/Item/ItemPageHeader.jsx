@@ -2,7 +2,6 @@ import styled from "styled-components";
 import ItemLink from "./ItemLink";
 import ItemDetails from "./ItemDetails";
 import useForagedData from "../../hooks/useForagedData";
-import useCustomData from "../../hooks/useCustomData";
 
 const PageHeader = styled.header`
   margin: 11px 0 0;
@@ -14,8 +13,7 @@ const PageHeader = styled.header`
 
 export default ({ id }) => {
   const data = useForagedData(id);
-  const { link, time } = useCustomData(data);
-  const { descendants, title, url } = data;
+  const { link, time, title, url } = data;
 
   return (
     <PageHeader>

@@ -3,7 +3,6 @@ import { BarLoader } from "react-spinners";
 import ItemLink from "./ItemLink";
 import ItemDetails from "./ItemDetails";
 import useForagedData from "../../hooks/useForagedData";
-import useCustomData from "../../hooks/useCustomData";
 
 const StyledListItem = styled.li`
   display: flex;
@@ -23,10 +22,18 @@ const ItemNum = styled.span`
 const ListItemNumber = ({ i }) => (i || i === 0) && <ItemNum>{i + 1}.</ItemNum>;
 const ListItem = ({ id, index }) => {
   const data = useForagedData(id);
-  const { link, time } = useCustomData(data);
-  const { title, url } = data;
+  const { link, time, title, url } = data;
 
-  return data.title ? (
+  if (!data.title)
+    return (
+      <BarLoader
+        color="var(--primary-color)"
+        height={2}
+        cssOverride={{ marginLeft: "7px" }}
+      />
+    );
+
+  return (
     <StyledListItem>
       <ListItemNumber i={index} />
       <div>
@@ -35,8 +42,6 @@ const ListItem = ({ id, index }) => {
         <ItemDetails data={{ ...data, time }} />
       </div>
     </StyledListItem>
-  ) : (
-    <BarLoader color="var(--primary-color)" height={1} />
   );
 };
 
