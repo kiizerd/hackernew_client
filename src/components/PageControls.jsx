@@ -25,14 +25,14 @@ const ControlsRow = styled.div`
 `;
 
 // TODO: Add max page number, and selectable pages
-const PageControls = ({ increment, decrement, current }) => {
+const PageControls = ({ current, max, update }) => {
   return (
     <ControlsRow>
-      <Button disabled={current == 0} onClick={decrement}>
+      <Button disabled={current == 0} onClick={() => update(current - 1)}>
         <GrPrevious />
       </Button>
       <i>{current + 1}</i>
-      <Button onClick={increment}>
+      <Button disabled={current == max} onClick={() => update(current + 1)}>
         <GrNext />
       </Button>
       {/* <hr /> */}
