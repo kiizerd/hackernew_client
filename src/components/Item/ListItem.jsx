@@ -29,7 +29,7 @@ const ListItem = ({ id, index }) => {
       <BarLoader
         color="var(--primary-color)"
         height={2}
-        cssOverride={{ marginLeft: "7px" }}
+        cssOverride={{ margin: "7px" }}
       />
     );
 
